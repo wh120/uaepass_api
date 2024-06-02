@@ -7,6 +7,8 @@ import 'package:uaepass_api/uaepass/uaepass_view.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'uaepass_user_token_model.dart';
 
+/// The [UaePassAPI] class provides methods to facilitate authentication
+/// with UAE Pass, a digital identity solution provided by the United Arab Emirates government.
 class UaePassAPI {
   final String clientId;
   final String redirectUri;
@@ -14,23 +16,36 @@ class UaePassAPI {
   final String appScheme;
   final bool isProduction;
 
-  UaePassAPI(
-      {required this.clientId,
-      required this.redirectUri,
-      required this.clientSecrete,
-      required this.appScheme,
-      required this.isProduction});
+  /// Constructs a new instance of the [UaePassAPI] class.
+  ///
+  /// [clientId]: The client ID provided by UAE Pass.
+  /// [redirectUri]: The URI to which the user should be redirected after authentication.
+  /// [clientSecrete]: The client secret provided by UAE Pass.
+  /// [appScheme]: The scheme used by the Flutter application.
+  /// [isProduction]: Indicates whether the app is running in production mode.
+  UaePassAPI({
+    required this.clientId,
+    required this.redirectUri,
+    required this.clientSecrete,
+    required this.appScheme,
+    required this.isProduction,
+  });
 
-  Future<String> getURL() async {
+  /// Generates the URL required to initiate the UAE Pass authentication process.
+  ///
+  /// Returns a [String] representing the constructed URL.
+  Future<String> _getURL() async {
+    // Determine the appropriate authentication context based on whether the UAE Pass app is installed.
     String acr = Const.uaePassMobileACR;
     String acrWeb = Const.uaePassWebACR;
 
     bool withApp = await canLaunchUrlString(
-      '${Const.uaePassScheme(isProduction)}digitalid-users-ids',
-    );
+        '${Const.uaePassScheme(isProduction)}digitalid-users-ids');
     if (!withApp) {
       acr = acrWeb;
     }
+
+    // Construct the URL with necessary parameters.
     String url = "${Const.baseUrl(isProduction)}/idshub/authorize?"
         "response_type=code"
         "&client_id=$clientId"
@@ -42,23 +57,33 @@ class UaePassAPI {
     return url;
   }
 
+  /// Initiates the UAE Pass authentication process.
+  ///
+  /// [context]: The [BuildContext] to navigate to the authentication view.
+  ///
+  /// Returns a [String] representing the authentication code obtained during the process.
   Future<String?> signIn(BuildContext context) async {
-    String url = await getURL();
+    String url = await _getURL();
     if (context.mounted) {
       return await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => UaePassLoginView(
-          url: url,
-          urlScheme: appScheme,
-          isProduction: isProduction,
+        context,
+        MaterialPageRoute(
+          builder: (context) => UaePassLoginView(
+            url: url,
+            urlScheme: appScheme,
+            isProduction: isProduction,
+          ),
         ),
-      ),
-    );
+      );
     }
     return null;
   }
 
+  /// Exchanges the authorization code for an access token.
+  ///
+  /// [code]: The authorization code obtained during the authentication process.
+  ///
+  /// Returns a [String] representing the access token.
   Future<String?> getAccessToken(String code) async {
     try {
       const String url = "/idshub/token";
@@ -89,10 +114,7 @@ class UaePassAPI {
         print(e);
         print(s);
       }
-
     }
     return null;
   }
-
-  logout() {}
 }

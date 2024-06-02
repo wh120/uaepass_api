@@ -1,6 +1,6 @@
 ## 0.1.2
 
-*  initial release.
+*  add code documentation .
 
 
 ## 0.1.1
