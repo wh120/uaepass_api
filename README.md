@@ -1,6 +1,6 @@
 # uaepass_api
 
-Un-official UAE PASS Flutter package for Android and iOS for authentication capability.
+Un-official UAE PASS Flutter package for authentication capability.
 
 
 ## Why uaepass_api?
@@ -10,13 +10,12 @@ Un-official UAE PASS Flutter package for Android and iOS for authentication capa
 - ❤ Supports app not installed scenario
 - 🛡️ Null safety
 
-- 
 ## Getting Started
 
 - Add the plugin to your pubspec.yaml file
 
 ```yaml
-uaepass_api: ^0.1.2
+uaepass_api: ^0.1.6
 ```
 
 - Run flutter pub get

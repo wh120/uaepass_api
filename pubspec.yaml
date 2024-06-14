@@ -1,7 +1,7 @@
 name: uaepass_api
 description: Flutter UAE PASS package for Authentication API.
 
-version: 0.1.2
+version: 0.1.6
 homepage: https://github.com/wh120/uaepass_api
 repository: https://github.com/wh120/uaepass_api
 issue_tracker: https://github.com/wh120/uaepass_api/issues

@@ -10,11 +10,11 @@ import 'uaepass_user_token_model.dart';
 /// The [UaePassAPI] class provides methods to facilitate authentication
 /// with UAE Pass, a digital identity solution provided by the United Arab Emirates government.
 class UaePassAPI {
-  final String clientId;
-  final String redirectUri;
-  final String clientSecrete;
-  final String appScheme;
-  final bool isProduction;
+  final String _clientId;
+  final String _redirectUri;
+  final String _clientSecrete;
+  final String _appScheme;
+  final bool _isProduction;
 
   /// Constructs a new instance of the [UaePassAPI] class.
   ///
@@ -24,12 +24,16 @@ class UaePassAPI {
   /// [appScheme]: The scheme used by the Flutter application.
   /// [isProduction]: Indicates whether the app is running in production mode.
   UaePassAPI({
-    required this.clientId,
-    required this.redirectUri,
-    required this.clientSecrete,
-    required this.appScheme,
-    required this.isProduction,
-  });
+    required String clientId,
+    required String redirectUri,
+    required String clientSecrete,
+    required String appScheme,
+    required bool isProduction,
+  })  : _isProduction = isProduction,
+        _appScheme = appScheme,
+        _clientSecrete = clientSecrete,
+        _redirectUri = redirectUri,
+        _clientId = clientId;
 
   /// Generates the URL required to initiate the UAE Pass authentication process.
   ///
@@ -40,18 +44,18 @@ class UaePassAPI {
     String acrWeb = Const.uaePassWebACR;
 
     bool withApp = await canLaunchUrlString(
-        '${Const.uaePassScheme(isProduction)}digitalid-users-ids');
+        '${Const.uaePassScheme(_isProduction)}digitalid-users-ids');
     if (!withApp) {
       acr = acrWeb;
     }
 
     // Construct the URL with necessary parameters.
-    String url = "${Const.baseUrl(isProduction)}/idshub/authorize?"
+    String url = "${Const.baseUrl(_isProduction)}/idshub/authorize?"
         "response_type=code"
-        "&client_id=$clientId"
+        "&client_id=$_clientId"
         "&scope=urn:uae:digitalid:profile:general"
         "&state=HnlHOJTkTb66Y5H"
-        "&redirect_uri=$redirectUri"
+        "&redirect_uri=$_redirectUri"
         "&acr_values=$acr";
 
     return url;
@@ -70,8 +74,8 @@ class UaePassAPI {
         MaterialPageRoute(
           builder: (context) => UaePassLoginView(
             url: url,
-            urlScheme: appScheme,
-            isProduction: isProduction,
+            urlScheme: _appScheme,
+            isProduction: _isProduction,
           ),
         ),
       );
@@ -89,15 +93,15 @@ class UaePassAPI {
       const String url = "/idshub/token";
 
       var data = {
-        'redirect_uri': redirectUri,
-        'client_id': clientId,
-        'client_secret': clientSecrete,
+        'redirect_uri': _redirectUri,
+        'client_id': _clientId,
+        'client_secret': _clientSecrete,
         'grant_type': 'authorization_code',
         'code': code
       };
 
       final response = await http.post(
-        Uri.parse(Const.baseUrl(isProduction) + url),
+        Uri.parse(Const.baseUrl(_isProduction) + url),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded',
         },

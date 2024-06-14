@@ -62,6 +62,7 @@ class _UaePassLoginViewState extends State<UaePassLoginView> {
         onWebViewCreated: (controller) async {
           InAppWebViewController.clearAllCache();
           webViewController = controller;
+          webViewController?.loadUrl(urlRequest: URLRequest(url: WebUri.uri(Uri.parse(widget.url))));
         },
         shouldOverrideUrlLoading: (controller, uri) async {
           String url = uri.request.url.toString();
