@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:uaepass_api/uaepass/const.dart';
+import 'package:uaepass_api/uaepass/uaepass_user_profile_model.dart';
 import 'package:uaepass_api/uaepass/uaepass_view.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'uaepass_user_token_model.dart';
@@ -119,6 +120,60 @@ class UaePassAPI {
         print(s);
       }
     }
+    return null;
+  }
+
+  /// Get profile information
+  ///
+  /// [token]: The authorization token obtained during the authentication process.
+  ///
+  /// Returns a [UAEPASSUserProfile] representing the profile info.
+  Future<UAEPASSUserProfile?> getUserProfile(String token) async {
+    try {
+      const String url = "/idshub/userinfo";
+
+      final response = await http.get(
+        Uri.parse(Const.baseUrl(_isProduction) + url),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer $token'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return UAEPASSUserProfile.fromJson(jsonDecode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e, s) {
+      if (kDebugMode) {
+        print(e);
+        print(s);
+      }
+    }
+    return null;
+  }
+
+  /// Initiates logout.
+  ///
+  /// [context]: The [BuildContext] to navigate to the authentication view.
+  ///
+  Future logout(BuildContext context) async {
+    String url =
+        "${Const.baseUrl(_isProduction)}/idshub/logout?redirect_uri=$_redirectUri/cancelled";
+    if (context.mounted) {
+      return await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UaePassLoginView(
+            url: url,
+            urlScheme: _appScheme,
+            isProduction: _isProduction,
+          ),
+        ),
+      );
+    }
+
     return null;
   }
 }

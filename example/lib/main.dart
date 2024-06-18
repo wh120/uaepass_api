@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uaepass_api/uaepass_api.dart';
+import 'package:uaepass_api/uaepass/uae_pass_api.dart';
+import 'package:uaepass_api/uaepass/uaepass_user_profile_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,73 +33,79 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  String _token = "";
-  bool _isLoading = false;
-  void _login() async{
-    if(_isLoading){
-      return;
-    }
-
-    UaePassAPI uaePassAPI =UaePassAPI(
+  String? _token;
+  UAEPASSUserProfile? _user;
+  void _loginOrLogout() async {
+    UaePassAPI uaePassAPI = UaePassAPI(
         clientId: "sandbox_stage",
-        redirectUri: "https://stg-ids.uaepass.ae",
+        redirectUri: "https://oauthtest.com/authorization/return",
         clientSecrete: "sandbox_stage",
         appScheme: "example_scheme",
-        isProduction: false
-    );
-    setState(() {
-      _isLoading = true;
+        isProduction: false);
 
-    });
-   try {
-     String? code = await  uaePassAPI.signIn(context);
-     if(code != null){
-       _token = await uaePassAPI.getAccessToken(code)??"";
-       setState(() {
-         _isLoading = false;
+    try {
+      if (_token != null) {
+        await uaePassAPI.logout(context);
+        _token = null;
+        _user = null;
+        setState(() {});
+        return;
+      }
+      String? code = await uaePassAPI.signIn(context);
 
-       });
-     }
-   }  catch (e) {
-     // TODO
-   }
+      if (code != null) {
+        _token = await uaePassAPI.getAccessToken(code);
 
-    setState(() {
-      _isLoading = true;
-
-    });
-
-
+        if (_token != null) {
+          _user = await uaePassAPI.getUserProfile(_token!);
+        }
+      } else {}
+      setState(() {});
+    } catch (e, s) {
+      // print(e);
+      // print(s);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
         title: Text(widget.title),
       ),
       body: Center(
-
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Press Login to get token:',
-            ),
             Text(
-              '$_token',
-              style: Theme.of(context).textTheme.headlineMedium,
+              _token == null
+                  ? 'Press button to get token:'
+                  : 'Press button to logout:',
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            if (_token != null)
+              ListTile(
+                title: Text("Token:"),
+                subtitle: Text("$_token"),
+              ),
+            if (_user != null)
+              Column(
+                children: [
+                  ListTile(
+                    title: Text("Full name:"),
+                    subtitle:
+                        Text("${_user?.firstnameEN} ${_user?.lastnameEN}"),
+                  ),
+                ],
+              )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _login,
+        onPressed: _loginOrLogout,
         tooltip: 'login',
         child: const Icon(Icons.login),
       ), // This trailing comma makes auto-formatting nicer for build methods.

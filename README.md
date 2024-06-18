@@ -6,7 +6,8 @@ Un-official UAE PASS Flutter package for authentication capability.
 ## Why uaepass_api?
 
 - 🚀 Easy to use
-- ⚡ Supports app installed scenario
+- ⚡ fullscreen window
+- ❤ Supports app installed scenario
 - ❤ Supports app not installed scenario
 - 🛡️ Null safety
 
@@ -15,7 +16,7 @@ Un-official UAE PASS Flutter package for authentication capability.
 - Add the plugin to your pubspec.yaml file
 
 ```yaml
-uaepass_api: ^0.1.6
+uaepass_api: ^0.1.7
 ```
 
 - Run flutter pub get
@@ -50,6 +51,19 @@ UaePassAPI uaePassAPI =UaePassAPI(
 
 ```dart
     String? token =  await uaePassAPI.getAccessToken(code);
+```
+
+
+- Get user info
+
+```dart
+    String? token =  await uaePassAPI.getUserProfile(token);
+```
+
+- Logout
+
+```dart
+  await uaePassAPI.logout(context);
 ```
 
 

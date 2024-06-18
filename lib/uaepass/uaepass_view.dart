@@ -60,9 +60,10 @@ class _UaePassLoginViewState extends State<UaePassLoginView> {
             supportZoom: false,
             useShouldOverrideUrlLoading: true),
         onWebViewCreated: (controller) async {
-          InAppWebViewController.clearAllCache();
+          await InAppWebViewController.clearAllCache();
           webViewController = controller;
-          webViewController?.loadUrl(urlRequest: URLRequest(url: WebUri.uri(Uri.parse(widget.url))));
+          webViewController?.loadUrl(
+              urlRequest: URLRequest(url: WebUri.uri(Uri.parse(widget.url))));
         },
         shouldOverrideUrlLoading: (controller, uri) async {
           String url = uri.request.url.toString();
@@ -86,11 +87,12 @@ class _UaePassLoginViewState extends State<UaePassLoginView> {
             final code = Uri.parse(url).queryParameters['code']!;
             Navigator.pop(context, code);
           } else if (url.contains('cancelled')) {
-            {}
-
-            Navigator.pop(context);
+            if (!url.contains('logout')) {
+              Navigator.pop(context);
+              return NavigationActionPolicy.CANCEL;
+            }
           }
-          return null;
+          return NavigationActionPolicy.ALLOW;
         },
       ),
     );

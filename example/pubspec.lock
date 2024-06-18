@@ -305,10 +305,10 @@ packages:
     dependency: "direct main"
     description:
       name: uaepass_api
-      sha256: b5ca1d0823371cec478fde5d1c687f87b834a2825c1e634b93a9b26a36725905
+      sha256: "14a139db2bff4a16f4624592af8e5117349532bf7ebb0e1bc94bdcddd2697550"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.6"
+    version: "0.1.7"
   url_launcher:
     dependency: transitive
     description:
