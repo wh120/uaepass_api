@@ -49,5 +49,4 @@ class UAEPASSUserProfile {
     firstnameAR = json['firstnameAR'];
     email = json['email'];
   }
-
 }
