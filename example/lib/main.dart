@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uaepass_api/uaepass/uae_pass_api.dart';
-import 'package:uaepass_api/uaepass/uaepass_user_profile_model.dart';
+import 'package:uaepass_api/uaepass_api.dart';
 
 void main() {
   runApp(const MyApp());
