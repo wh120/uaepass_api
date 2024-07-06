@@ -75,8 +75,8 @@ class _UaePassLoginViewState extends State<UaePassLoginView> {
             final newUrl =
                 '${Const.uaePassScheme(widget.isProduction)}${uri.host}${uri.path}';
 
-            String u = "$newUrl?successurl=${widget.urlScheme}"
-                "&failureurl=${widget.urlScheme}"
+            String u = "$newUrl?successurl=${widget.urlScheme}://success"
+                "&failureurl=${widget.urlScheme}://failure"
                 "&closeondone=true";
 
             await launchUrl(Uri.parse(u));

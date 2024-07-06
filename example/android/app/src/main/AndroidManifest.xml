@@ -33,11 +33,10 @@
 
                 <data
                     android:host="success"
-                    android:scheme="ex" />
-
+                    android:scheme="exampleScheme" />
                 <data
-                    android:host="example_scheme"
-                    android:scheme="example_scheme" />
+                    android:host="failure"
+                    android:scheme="exampleScheme" />
 
             </intent-filter>
 

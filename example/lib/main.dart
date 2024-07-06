@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
         clientId: "sandbox_stage",
         redirectUri: "https://oauthtest.com/authorization/return",
         clientSecrete: "sandbox_stage",
-        appScheme: "example_scheme",
+        appScheme: "exampleScheme",
         isProduction: false);
 
     try {
