@@ -1,3 +1,11 @@
+## 1.0.2
+
+*  fix webview.
+
+## 1.0.0
+
+*  add example.
+
 ## 0.2.1
 
 *  add getUserProfile and logout methods.

@@ -86,6 +86,7 @@ class _UaePassLoginViewState extends State<UaePassLoginView> {
           if (url.contains('code=')) {
             final code = Uri.parse(url).queryParameters['code']!;
             Navigator.pop(context, code);
+            return NavigationActionPolicy.CANCEL;
           } else if (url.contains('cancelled')) {
             if (!url.contains('logout')) {
               Navigator.pop(context);
