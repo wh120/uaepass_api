@@ -1,3 +1,7 @@
+## 1.0.3
+
+*  support Arabic language.
+
 ## 1.0.2
 
 *  fix webview.

@@ -16,7 +16,7 @@ Un-official UAE PASS Flutter package for authentication capability.
 - Add the plugin to your pubspec.yaml file
 
 ```yaml
-uaepass_api: ^1.0.2
+uaepass_api: ^1.0.3
 ```
 
 - Run flutter pub get
@@ -35,6 +35,7 @@ UaePassAPI uaePassAPI =UaePassAPI(
     redirectUri: "<redirectUri>",
     clientSecrete: "<clientSecrete>",
     appScheme: "<Your App Scheme>",
+    language: "en",
     isProduction: false);
 ```
 

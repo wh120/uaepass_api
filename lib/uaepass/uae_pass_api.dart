@@ -15,6 +15,7 @@ class UaePassAPI {
   final String _redirectUri;
   final String _clientSecrete;
   final String _appScheme;
+  final String? _language;
   final bool _isProduction;
 
   /// Constructs a new instance of the [UaePassAPI] class.
@@ -24,17 +25,20 @@ class UaePassAPI {
   /// [clientSecrete]: The client secret provided by UAE Pass.
   /// [appScheme]: The scheme used by the Flutter application.
   /// [isProduction]: Indicates whether the app is running in production mode.
-  UaePassAPI({
+  /// [language]: Language parameter to be sent to render English or Arabic login pages of UAEPASS (English page : en Arabic page : ar).
+  UaePassAPI( {
     required String clientId,
     required String redirectUri,
     required String clientSecrete,
     required String appScheme,
     required bool isProduction,
+    String? language,
   })  : _isProduction = isProduction,
         _appScheme = appScheme,
         _clientSecrete = clientSecrete,
         _redirectUri = redirectUri,
-        _clientId = clientId;
+        _clientId = clientId,
+        _language = language;
 
   /// Generates the URL required to initiate the UAE Pass authentication process.
   ///
@@ -57,6 +61,7 @@ class UaePassAPI {
         "&scope=urn:uae:digitalid:profile:general"
         "&state=HnlHOJTkTb66Y5H"
         "&redirect_uri=$_redirectUri"
+        "&ui_locales=${_language??"en"}"
         "&acr_values=$acr";
 
     return url;
